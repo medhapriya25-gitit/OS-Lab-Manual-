@@ -1,0 +1,7 @@
+#include <stdio.h>
+#include <pthread.h>
+int slots=4; pthread_rwlock_t l=PTHREAD_RWLOCK_INITIALIZER;
+void *read(void *p){pthread_rwlock_rdlock(&l);printf("Slots: %d\n",slots);pthread_rwlock_unlock(&l);return 0;}
+void *write(void *p){pthread_rwlock_wrlock(&l);slots--;printf("Updated: %d\n",slots);pthread_rwlock_unlock(&l);return 0;}
+int main(){pthread_t r,w;pthread_create(&r,0,read,0);pthread_create(&w,0,write,0);
+pthread_join(r,0);pthread_join(w,0);return 0;}
